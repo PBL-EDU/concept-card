@@ -1,0 +1,10 @@
+{
+  "id": "concept-card",
+  "name": "Concept Card",
+  "version": "1.7.0",
+  "minAppVersion": "1.4.0",
+  "description": "Generate structured concept cards from selected text with your own OpenAI-compatible provider.",
+  "author": "denghao",
+  "authorUrl": "",
+  "isDesktopOnly": false
+}

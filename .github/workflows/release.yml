@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck and test
+        run: |
+          npm run typecheck
+          node test/run.cjs
+          node test/integration.cjs
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify tag matches manifest version
+        run: |
+          node -e "const m=require('./manifest.json');const tag=process.env.GITHUB_REF_NAME;if(m.version!==tag){console.error('manifest version '+m.version+' != tag '+tag);process.exit(1)}"
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            main.js
+            manifest.json
+            styles.css

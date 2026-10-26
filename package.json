@@ -1,0 +1,25 @@
+{
+  "name": "concept-card",
+  "version": "1.7.0",
+  "description": "Generate structured concept cards from selected text with your own OpenAI-compatible provider.",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "node esbuild.config.mjs production",
+    "typecheck": "tsc --noEmit",
+    "test": "node test/run.cjs",
+    "test:integration": "node test/integration.cjs",
+    "verify": "npm run typecheck && npm run build && npm run test && npm run test:integration"
+  },
+  "keywords": ["obsidian", "concept-card", "ai", "knowledge-base"],
+  "author": "denghao",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "builtin-modules": "^3.3.0",
+    "esbuild": "^0.25.0",
+    "obsidian": "^1.4.11",
+    "tslib": "^2.6.2",
+    "typescript": "^5.4.5"
+  }
+}

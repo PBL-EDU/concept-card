@@ -1,0 +1,160 @@
+/* 概念卡生成器 —— 样式 */
+
+.cc-modal .cc-hint {
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+  margin: 0 0 1em;
+}
+
+.cc-modal .cc-preview-modal {
+  width: 100%;
+}
+
+.cc-modal.cc-wide {
+  width: min(920px, 92vw);
+}
+
+.cc-modal .cc-editor {
+  width: 100%;
+  height: 46vh;
+  min-height: 260px;
+  resize: vertical;
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-smaller);
+  line-height: 1.55;
+  padding: 10px 12px;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  color: var(--text-normal);
+  tab-size: 2;
+}
+
+.cc-modal .cc-input {
+  width: 100%;
+  min-height: 72px;
+  resize: vertical;
+  font-family: var(--font-interface);
+  font-size: var(--font-ui-medium);
+  padding: 8px 10px;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  color: var(--text-normal);
+}
+
+.cc-modal .cc-file-row {
+  margin: 0.4em 0 0.8em;
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+  font-family: var(--font-monospace);
+  word-break: break-all;
+}
+
+.cc-modal .cc-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 1em;
+}
+
+.cc-modal .cc-btn {
+  padding: 6px 14px;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--background-modifier-border);
+  background: var(--interactive-normal);
+  color: var(--text-normal);
+  cursor: pointer;
+  font-size: var(--font-ui-small);
+}
+
+.cc-modal .cc-btn:hover {
+  background: var(--interactive-hover);
+}
+
+.cc-modal .cc-btn.mod-cta {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  border-color: var(--interactive-accent);
+}
+
+/* 设置页里的目录选择浮层 */
+.cc-folder-picker {
+  margin: 6px 0 12px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s);
+  background: var(--background-secondary);
+  padding: 8px;
+  max-width: 520px;
+}
+
+.cc-folder-picker .cc-folder-search {
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 4px 8px;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  color: var(--text-normal);
+}
+
+.cc-folder-picker .cc-folder-list {
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.cc-folder-picker .cc-folder-item {
+  padding: 4px 8px;
+  border-radius: var(--radius-s);
+  cursor: pointer;
+  font-size: var(--font-ui-small);
+  color: var(--text-normal);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cc-folder-picker .cc-folder-item:hover {
+  background: var(--background-modifier-hover);
+}
+
+.cc-folder-picker .cc-folder-empty {
+  padding: 6px 8px;
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+}
+
+/* 复查面板与状态栏 */
+.cc-status {
+  cursor: pointer;
+}
+.cc-status:hover {
+  color: var(--text-accent);
+}
+.cc-review-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+.cc-review-title {
+  font-weight: 600;
+  cursor: pointer;
+}
+.cc-review-meta {
+  font-size: var(--font-ui-smaller);
+  color: var(--text-muted);
+}
+.cc-review-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+.cc-review-actions button {
+  font-size: var(--font-ui-smaller);
+  padding: 2px 8px;
+}
+.cc-muted {
+  color: var(--text-muted);
+}
