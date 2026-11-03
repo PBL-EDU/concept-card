@@ -31,7 +31,7 @@ Once published, search for **Concept Card** in Settings → Community plugins.
 ### BRAT (beta / self-hosted)
 
 1. Install and enable the **BRAT** plugin.
-2. `Add Beta plugin` with your repository, for example `your-name/concept-card`.
+2. `Add Beta plugin` with your repository: `PBL-EDU/concept-card`.
 3. Enable **Concept Card** in Community plugins.
 
 ### Manual

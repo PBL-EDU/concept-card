@@ -1,59 +1,74 @@
-# Submission checklist
+# Submission status
 
-Prepared for publishing **Concept Card** (`id: concept-card`) to GitHub and to the Obsidian Community directory.
+**Repository:** <https://github.com/PBL-EDU/concept-card>
+**Release:** <https://github.com/PBL-EDU/concept-card/releases/tag/1.7.0>
+**Plugin id:** `concept-card`
+**Manifest version:** `1.7.0`
 
-## 1. GitHub repository
+## Already done
 
-1. Create a public repository, for example `concept-card`.
-2. Fill in `authorUrl` in `manifest.json` with the repository URL (it is intentionally empty now).
-3. Push this folder:
+- [x] Public GitHub repository with `README.md`, `README.zh-CN.md`, `LICENSE`, `manifest.json`, `versions.json`, `src/`, tests.
+- [x] `authorUrl` points at the repository.
+- [x] Version `1.7.0`, tag `1.7.0` pushed, release with assets `main.js`, `manifest.json`, `styles.css` verified.
+- [x] English README with a network-use / privacy disclosure.
+- [x] No telemetry, ads, self-update, obfuscation, or internal APIs (`app.internalPlugins` removed).
+- [x] BRAT install works with `PBL-EDU/concept-card`.
 
-   ```bash
-   git remote add origin https://github.com/<your-name>/concept-card.git
-   git push -u origin main
-   ```
+## Remaining: submit to the Obsidian Community directory
 
-4. Bump `manifest.json` `version` (semver, e.g. `1.7.0`), commit, then create a release with the **same tag**:
+This step needs the maintainer's Obsidian account (it cannot be automated from the repository).
 
-   ```bash
-   git tag 1.7.0
-   git push origin 1.7.0
-   ```
+1. Sign in at <https://community.obsidian.md> with the Obsidian account.
+2. Link the GitHub account `PBL-EDU`.
+3. Add the plugin; the directory reads `manifest.json` at the `main` branch HEAD.
+4. Fix any automated review findings, bump the version, publish a new release.
+5. After approval, users can search for **Concept Card** inside Obsidian.
 
-   The included workflow `.github/workflows/release.yml` builds and attaches `main.js`, `manifest.json`, `styles.css` automatically. Without Actions, attach those three files manually.
+## Release workflow (optional)
 
-## 2. Obsidian Community directory
+The CI template lives at `docs/release-workflow.yml` because the current GitHub token lacks the `workflow` scope (GitHub rejects pushing `.github/workflows/*` with such a token).
 
-1. Sign in at <https://community.obsidian.md> with an Obsidian account.
-2. Link the GitHub account that owns the repository.
-3. Add the plugin; the directory reads `manifest.json` at the default branch HEAD.
-4. Address automated review feedback, bump version, publish a new release.
-5. Once approved, search for **Concept Card** inside Obsidian.
+To enable automated releases:
 
-## 3. Requirement checks
+```bash
+gh auth refresh -h github.com -s workflow
+mkdir -p .github/workflows
+cp docs/release-workflow.yml .github/workflows/release.yml
+git add .github/workflows/release.yml
+git commit -m "Add release workflow"
+git push
+```
+
+Until then, publish releases manually:
+
+```bash
+gh release create <version> main.js manifest.json styles.css --verify-tag
+```
+
+The tag must equal `manifest.json` `version` exactly (`1.7.0`, not `v1.7.0`).
+
+## Requirement checklist
 
 | Requirement | Status |
 | --- | --- |
 | `LICENSE` file (MIT) | ✅ |
 | `README.md` describes purpose/usage | ✅ |
 | README discloses network use and data sent | ✅ |
-| `manifest.json` at repo root | ✅ |
-| `id` unique and contains no "obsidian" | ✅ (`concept-card`, directory returns not found) |
-| `version` is semver `x.y.z` | ✅ `1.7.0` |
+| `manifest.json` at repository HEAD | ✅ |
+| `id` unique, no "obsidian" | ✅ `concept-card` |
+| `version` semver | ✅ `1.7.0` |
 | `minAppVersion` accurate | ✅ `1.4.0` |
 | Description ≤250 chars, ends with `.`, no emoji | ✅ |
 | `isDesktopOnly` accurate (no Node/Electron APIs) | ✅ `false` |
-| Release tag equals manifest version | release workflow enforces |
-| Release assets `main.js`, `manifest.json`, `styles.css` | workflow uploads |
+| Release tag equals manifest version | ✅ `1.7.0` |
+| Release assets present | ✅ `main.js`, `manifest.json`, `styles.css` |
 | No telemetry / ads / self-update / obfuscation | ✅ |
-| No sample code left | ✅ |
-| Command IDs do not include the plugin id | ✅ |
-| No internal/undocumented APIs | ✅ (Daily Notes path is now plugin settings, `{YYYY}` placeholders) |
-| Source code included in repository | ✅ `src/` |
+| Command IDs do not include plugin id | ✅ |
+| No internal/undocumented APIs | ✅ |
+| Source included | ✅ `src/` |
 
-## 4. Post-publish maintenance
+## Maintenance
 
 - Keep `versions.json` updated (`version → minAppVersion`).
-- Each subsequent release: bump version, tag with the exact version, attach assets.
-- Users install updates from GitHub through Obsidian; the plugin must not self-update.
-- Re-check Developer policies when adding features that touch the network or files outside the vault.
+- Every release: bump version, tag with the exact version, attach the three assets.
+- Re-check Developer policies for network or file-access changes.
