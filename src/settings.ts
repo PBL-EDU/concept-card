@@ -44,14 +44,14 @@ export class ConceptCardSettingTab extends PluginSettingTab {
     const detected = this.detectRoot();
     const subfolders = listSubfolders(this.app, root);
 
-    containerEl.createEl("h2", { text: "概念卡生成器" });
+    new Setting(containerEl).setName("概念卡生成器").setHeading();
     containerEl.createEl("p", {
       cls: "setting-item-description",
       text: "选中人名 / 理论 / 概念 → 右键「生成概念卡」→ AI 生成卡片并归档到知识库。阅读视图的右键菜单由本插件接管，可用下方开关关闭。",
     });
 
     /* ---------------- 归档位置 ---------------- */
-    containerEl.createEl("h3", { text: "归档位置" });
+    new Setting(containerEl).setName("归档位置").setHeading();
 
     new Setting(containerEl)
       .setName("概念卡放在库根目录")
@@ -175,7 +175,7 @@ export class ConceptCardSettingTab extends PluginSettingTab {
     }
 
     /* ---------------- 卡片内容 ---------------- */
-    containerEl.createEl("h3", { text: "卡片内容" });
+    new Setting(containerEl).setName("卡片内容").setHeading();
 
     new Setting(containerEl)
       .setName("卡片语言")
@@ -269,7 +269,7 @@ export class ConceptCardSettingTab extends PluginSettingTab {
       });
 
     /* ---------------- 保存行为 ---------------- */
-    containerEl.createEl("h3", { text: "保存行为" });
+    new Setting(containerEl).setName("保存行为").setHeading();
 
     new Setting(containerEl)
       .setName("保存前预览")
@@ -329,7 +329,7 @@ export class ConceptCardSettingTab extends PluginSettingTab {
       );
 
     /* ---------------- 复查与阶段 ---------------- */
-    containerEl.createEl("h3", { text: "复查与阶段" });
+    new Setting(containerEl).setName("复查与阶段").setHeading();
     const intervalRows: Array<{ key: CardStage; label: string }> = [
       { key: "幼苗", label: "幼苗复查间隔（天）" },
       { key: "成长", label: "成长复查间隔（天）" },
@@ -421,7 +421,7 @@ export class ConceptCardSettingTab extends PluginSettingTab {
       });
 
     /* ---------------- 交互 ---------------- */
-    containerEl.createEl("h3", { text: "交互" });
+    new Setting(containerEl).setName("交互").setHeading();
 
     new Setting(containerEl)
       .setName("阅读视图右键菜单")
@@ -444,7 +444,7 @@ export class ConceptCardSettingTab extends PluginSettingTab {
       );
 
     /* ---------------- AI ---------------- */
-    containerEl.createEl("h3", { text: "AI 服务" });
+    new Setting(containerEl).setName("AI 服务").setHeading();
 
     new Setting(containerEl)
       .setName("服务商")
@@ -481,7 +481,7 @@ export class ConceptCardSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("API Key")
-      .setDesc("只保存在本库的 .obsidian/plugins/concept-card/data.json，不会上传到别处")
+      .setDesc(`只保存在本库的 ${this.app.vault.configDir}/plugins/concept-card/data.json，不会上传到别处`)
       .addText((text) => {
         text.inputEl.type = "password";
         text
@@ -512,7 +512,6 @@ export class ConceptCardSettingTab extends PluginSettingTab {
         slider
           .setLimits(0, 1, 0.05)
           .setValue(settings.temperature)
-          .setDynamicTooltip()
           .onChange(async (value) => {
             settings.temperature = value;
             await this.plugin.saveSettings();
@@ -570,7 +569,7 @@ export class ConceptCardSettingTab extends PluginSettingTab {
       );
 
     /* ---------------- 重置 ---------------- */
-    containerEl.createEl("h3", { text: "维护" });
+    new Setting(containerEl).setName("维护").setHeading();
     new Setting(containerEl)
       .setName("恢复默认设置")
       .setDesc("会清空 AI 配置（Base URL / API Key / 模型等），不会删除已生成的卡片")
@@ -589,46 +588,37 @@ export class ConceptCardSettingTab extends PluginSettingTab {
   }
 
   /** 简易目录选择：把文件夹列表挂到按钮下方的浮层里（在 popout 窗口里也能用） */
-  private showFolderPicker(evt: MouseEvent, onPick: (path: string) => void): void {
-    const anchor = evt.currentTarget as HTMLElement;
-    const doc = anchor.ownerDocument ?? document;
-    const parent = anchor.parentElement;
-    parent?.querySelector(".cc-folder-picker")?.remove();
+  private showFolderPicker(evt: MouseEvent, onPick: (path: string) => void | Promise<void>): void {
+    const anchor = evt.currentTarget as HTMLElement | null;
+    const parent = anchor?.parentElement;
+    if (!anchor || !parent) return;
+    const doc = anchor.ownerDocument;
+    parent.querySelector(".cc-folder-picker")?.remove();
 
-    const picker = doc.createElement("div");
-    picker.className = "cc-folder-picker";
-    const search = doc.createElement("input");
+    const picker = parent.createDiv({ cls: "cc-folder-picker" });
+    const search = picker.createEl("input");
     search.type = "text";
     search.className = "cc-folder-search";
     search.placeholder = "搜索目录…";
-    const list = doc.createElement("div");
-    list.className = "cc-folder-list";
-    picker.append(search, list);
+    const list = picker.createDiv({ cls: "cc-folder-list" });
 
     const render = (filter: string) => {
       list.empty();
       const items = this.folders.filter((f) => f.toLowerCase().includes(filter.toLowerCase())).slice(0, 300);
       if (!items.length) {
-        const empty = doc.createElement("div");
-        empty.className = "cc-folder-empty";
-        empty.textContent = "没有匹配目录";
-        list.appendChild(empty);
+        list.createDiv({ cls: "cc-folder-empty", text: "没有匹配目录" });
       }
       for (const path of items) {
-        const item = doc.createElement("div");
-        item.className = "cc-folder-item";
-        item.textContent = path;
+        const item = list.createDiv({ cls: "cc-folder-item", text: path });
         item.addEventListener("click", () => {
           picker.remove();
-          onPick(path);
+          void onPick(path);
         });
-        list.appendChild(item);
       }
     };
 
     search.addEventListener("input", () => render(search.value));
     render("");
-    parent?.appendChild(picker);
     window.setTimeout(() => search.focus(), 30);
     const close = (e: MouseEvent) => {
       if (!picker.contains(e.target as Node)) {

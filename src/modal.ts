@@ -255,7 +255,7 @@ export class TermInputModal extends Modal {
     this.textarea.addEventListener("keydown", (evt) => {
       if (evt.key !== "Enter" || evt.shiftKey) return;
       // 中文输入法组词时回车用于选词，不能当作提交
-      if (evt.isComposing || evt.keyCode === 229) return;
+      if (evt.isComposing) return;
       evt.preventDefault();
       this.submit();
     });

@@ -517,3 +517,8 @@ export function nowISO(now = new Date()): { iso: string; human: string } {
 export function stageAfterUpgrade(prev: CardStage): CardStage {
   return prev === "常青" ? "常青" : "成长";
 }
+
+/** 把任意值收窄成合法阶段 */
+export function toStage(value: unknown): CardStage {
+  return value === "成长" || value === "常青" ? value : "幼苗";
+}

@@ -1,5 +1,5 @@
 import { App, TFile } from "obsidian";
-import type { CardStage } from "./card";
+import { toStage, type CardStage } from "./card";
 
 export interface ReviewCard {
   file: TFile;
@@ -17,11 +17,11 @@ export function todayKey(now = new Date()): string {
 function cardsWithRevisit(app: App): Array<{ file: TFile; revisit: string; stage: CardStage }> {
   const out: Array<{ file: TFile; revisit: string; stage: CardStage }> = [];
   for (const file of app.vault.getMarkdownFiles()) {
-    const front = app.metadataCache.getFileCache(file)?.frontmatter as Record<string, unknown> | undefined;
+    const front = app.metadataCache.getFileCache(file)?.frontmatter;
     if (!front || !front.card_format) continue;
     const revisit = String(front.revisit ?? "").slice(0, 10);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(revisit)) continue;
-    out.push({ file, revisit, stage: String(front.stage ?? "幼苗") as CardStage });
+    out.push({ file, revisit, stage: toStage(front.stage) });
   }
   return out;
 }

@@ -19,7 +19,7 @@ Chinese documentation: [README.zh-CN.md](README.zh-CN.md)
 
 ## Requirements
 
-- Obsidian **1.4.0** or newer (desktop or mobile; no Node/Electron APIs are used).
+- Obsidian **1.7.2** or newer (desktop or mobile; no Node/Electron APIs are used).
 - An OpenAI-compatible chat completions endpoint: OpenAI, DeepSeek, Ollama (local), or a custom gateway.
 
 ## Installation

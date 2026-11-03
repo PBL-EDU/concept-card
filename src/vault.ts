@@ -64,7 +64,7 @@ export function collectExistingTags(app: App, root: string, limit = 80): string[
   const tags = new Set<string>();
   for (const file of app.vault.getMarkdownFiles()) {
     if (prefix && !file.path.startsWith(prefix)) continue;
-    const front = app.metadataCache.getFileCache(file)?.frontmatter as Record<string, unknown> | undefined;
+    const front = app.metadataCache.getFileCache(file)?.frontmatter;
     if (!front) continue;
     const raw = front.tags;
     const list = Array.isArray(raw) ? raw : typeof raw === "string" ? raw.split(/[,，]/) : [];
@@ -153,7 +153,7 @@ export function findCardsByTitle(app: App, title: string): TFile[] {
       hits.push(file);
       continue;
     }
-    const front = app.metadataCache.getFileCache(file)?.frontmatter as Record<string, unknown> | undefined;
+    const front = app.metadataCache.getFileCache(file)?.frontmatter;
     if (!front) continue;
     const fmTitle = typeof front.title === "string" ? front.title : "";
     if (fmTitle && titleKey(fmTitle) === key) {

@@ -1,10 +1,10 @@
 {
   "id": "concept-card",
   "name": "Concept Card",
-  "version": "1.7.0",
-  "minAppVersion": "1.4.0",
+  "version": "1.7.1",
+  "minAppVersion": "1.7.2",
   "description": "Generate structured concept cards from selected text with your own OpenAI-compatible provider.",
   "author": "denghao",
-  "authorUrl": "https://github.com/PBL-EDU/concept-card",
+  "authorUrl": "https://github.com/PBL-EDU",
   "isDesktopOnly": false
 }

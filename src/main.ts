@@ -29,6 +29,7 @@ import {
   setFrontmatterField,
   stageAfterUpgrade,
   suggestStageFor,
+  toStage,
   upgradeSections,
   type CardFormat,
   type CardRenderContextV3,
@@ -88,13 +89,13 @@ function uniquePaths(list: string[]): string[] {
 
 function cardFormatOf(app: App, file: TFile | null): string {
   if (!file) return "";
-  const front = app.metadataCache.getFileCache(file)?.frontmatter as Record<string, unknown> | undefined;
+  const front = app.metadataCache.getFileCache(file)?.frontmatter;
   return typeof front?.card_format === "string" ? front.card_format : "";
 }
 
 function stageOf(app: App, file: TFile | null): CardStage {
   if (!file) return "幼苗";
-  const front = app.metadataCache.getFileCache(file)?.frontmatter as Record<string, unknown> | undefined;
+  const front = app.metadataCache.getFileCache(file)?.frontmatter;
   const stage = String(front?.stage ?? "幼苗");
   return stage === "成长" || stage === "常青" ? stage : "幼苗";
 }
@@ -145,11 +146,12 @@ export default class ConceptCardPlugin extends Plugin {
           return;
         }
         if (view?.file && cardFormatOf(this.app, view.file) === "lite") {
+          const file = view.file;
           menu.addItem((item) =>
             item
               .setTitle("补全为完整版（AI）")
               .setIcon("arrow-up-circle")
-              .onClick(() => void this.upgradeCard(view.file as TFile, true)),
+              .onClick(() => void this.upgradeCard(file, true)),
           );
         }
       }),
@@ -694,13 +696,13 @@ export default class ConceptCardPlugin extends Plugin {
   }
 
   private async upgradeCard(file: TFile, useAI: boolean): Promise<void> {
-    const front = this.app.metadataCache.getFileCache(file)?.frontmatter as Record<string, unknown> | undefined;
+    const front = this.app.metadataCache.getFileCache(file)?.frontmatter;
     if (!front || front.card_format !== "lite") {
       new Notice("这张卡不是精简版（或不是本插件生成的卡片），无需升级");
       return;
     }
     const type = String(front.type ?? "概念");
-    const stage = (String(front.stage ?? "幼苗") || "幼苗") as CardStage;
+    const stage = toStage(front.stage);
     const missing = upgradeSections();
     const lines = missing.map((id) => `新增：${headingFor(id, type)}`);
     new ConfirmModal(
@@ -760,7 +762,7 @@ export default class ConceptCardPlugin extends Plugin {
   }
 
   async markEvergreen(file: TFile): Promise<void> {
-    const front = this.app.metadataCache.getFileCache(file)?.frontmatter as Record<string, unknown> | undefined;
+    const front = this.app.metadataCache.getFileCache(file)?.frontmatter;
     if (!front?.card_format) {
       new Notice("这不是本插件生成的概念卡");
       return;
@@ -864,7 +866,7 @@ export default class ConceptCardPlugin extends Plugin {
       new Notice("请先打开一张概念卡");
       return;
     }
-    const front = this.app.metadataCache.getFileCache(file)?.frontmatter as Record<string, unknown> | undefined;
+    const front = this.app.metadataCache.getFileCache(file)?.frontmatter;
     const revisit = String(front?.revisit ?? "").slice(0, 10);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(revisit)) {
       new Notice("这张卡还没有安排复查日期");
@@ -891,14 +893,14 @@ export default class ConceptCardPlugin extends Plugin {
   private async openReviewView(): Promise<void> {
     const leaves = this.app.workspace.getLeavesOfType(REVIEW_VIEW_TYPE);
     if (leaves.length) {
-      this.app.workspace.revealLeaf(leaves[0]);
+      await this.app.workspace.revealLeaf(leaves[0]);
       const view = leaves[0].view;
       if (view instanceof ConceptReviewView) view.render();
       return;
     }
     const leaf = this.app.workspace.getRightLeaf(false) ?? this.app.workspace.getLeaf(true);
     await leaf.setViewState({ type: REVIEW_VIEW_TYPE, active: true });
-    this.app.workspace.revealLeaf(leaf);
+    await this.app.workspace.revealLeaf(leaf);
   }
 
   public async markReviewed(file: TFile): Promise<void> {
@@ -920,7 +922,7 @@ export default class ConceptCardPlugin extends Plugin {
 
   private async maybeSuggestStage(file: TFile | null): Promise<void> {
     if (!this.settings.stageSuggestions || !file || file.extension !== "md") return;
-    const front = this.app.metadataCache.getFileCache(file)?.frontmatter as Record<string, unknown> | undefined;
+    const front = this.app.metadataCache.getFileCache(file)?.frontmatter;
     if (!front?.card_format) return;
     const stage = stageOf(this.app, file);
     const format: CardFormat = front.card_format === "full" ? "full" : "lite";
@@ -945,7 +947,7 @@ export default class ConceptCardPlugin extends Plugin {
       new Notice("请先打开一张概念卡");
       return;
     }
-    const front = this.app.metadataCache.getFileCache(file)?.frontmatter as Record<string, unknown> | undefined;
+    const front = this.app.metadataCache.getFileCache(file)?.frontmatter;
     if (!front?.card_format) {
       new Notice("这不是本插件生成的概念卡");
       return;

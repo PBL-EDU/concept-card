@@ -501,7 +501,7 @@ function stripMarkdown(text: string): string {
   return text
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")
     .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
-    .replace(/\[\[([^\]|]*)(?:\|([^\]]*))?\]\]/g, (_m, a, b) => b || a)
+    .replace(/\[\[([^\]|]*)(?:\|([^\]]*))?\]\]/g, (_m: string, a: string, b: string | undefined) => b || a)
     .replace(/[`*_~=]+/g, "")
     .replace(/^#{1,6}\s+/gm, "")
     .replace(/^>\s?/gm, "")
