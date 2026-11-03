@@ -96,6 +96,12 @@ This plugin calls **only** the endpoint you configure. When you trigger generati
 
 to that provider. The API key is stored locally in `data.json`. With a local Ollama endpoint, no data leaves your machine.
 
+### Local behavior
+
+- Reads vault **metadata and file lists** to find existing cards, folders, and review dates. This is how duplicate detection and filing work.
+- Writes only when you trigger an action: generate, upgrade, review, evergreen, or Daily Note reminder.
+- The **Copy** action writes the selected text to the clipboard. The plugin never reads the clipboard.
+
 There is **no telemetry, no analytics, no ads, no self-update mechanism, and no obfuscated code**. Generated content may be inaccurate; verify facts against the source.
 
 ## Development

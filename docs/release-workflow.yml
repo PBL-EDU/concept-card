@@ -7,6 +7,8 @@ on:
 
 permissions:
   contents: write
+  id-token: write
+  attestations: write
 
 jobs:
   build:
@@ -34,6 +36,13 @@ jobs:
       - name: Verify tag matches manifest version
         run: |
           node -e "const m=require('./manifest.json');const tag=process.env.GITHUB_REF_NAME;if(m.version!==tag){console.error('manifest version '+m.version+' != tag '+tag);process.exit(1)}"
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            main.js
+            styles.css
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2

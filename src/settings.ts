@@ -595,21 +595,21 @@ export class ConceptCardSettingTab extends PluginSettingTab {
     const doc = anchor.ownerDocument;
     parent.querySelector(".cc-folder-picker")?.remove();
 
-    const picker = parent.createDiv({ cls: "cc-folder-picker" });
+    const picker = parent.createEl("div", { cls: "cc-folder-picker" });
     const search = picker.createEl("input");
     search.type = "text";
     search.className = "cc-folder-search";
     search.placeholder = "搜索目录…";
-    const list = picker.createDiv({ cls: "cc-folder-list" });
+    const list = picker.createEl("div", { cls: "cc-folder-list" });
 
     const render = (filter: string) => {
       list.empty();
       const items = this.folders.filter((f) => f.toLowerCase().includes(filter.toLowerCase())).slice(0, 300);
       if (!items.length) {
-        list.createDiv({ cls: "cc-folder-empty", text: "没有匹配目录" });
+        list.createEl("div", { cls: "cc-folder-empty", text: "没有匹配目录" });
       }
       for (const path of items) {
-        const item = list.createDiv({ cls: "cc-folder-item", text: path });
+        const item = list.createEl("div", { cls: "cc-folder-item", text: path });
         item.addEventListener("click", () => {
           picker.remove();
           void onPick(path);

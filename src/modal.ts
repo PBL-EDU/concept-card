@@ -113,7 +113,7 @@ export class CardPreviewModal extends Modal {
         });
       });
 
-    this.filenameEl = contentEl.createDiv({ cls: "cc-file-row" }).createEl("span", { cls: "cc-filename" });
+    this.filenameEl = contentEl.createEl("div", { cls: "cc-file-row" }).createEl("span", { cls: "cc-filename" });
 
     this.textarea = contentEl.createEl("textarea", { cls: "cc-editor" });
     this.textarea.value = this.markdown;
@@ -123,7 +123,7 @@ export class CardPreviewModal extends Modal {
       this.dirty = true;
     });
 
-    const footer = contentEl.createDiv({ cls: "cc-footer" });
+    const footer = contentEl.createEl("div", { cls: "cc-footer" });
     footer.createEl("button", { text: "重新生成", cls: "cc-btn" }).addEventListener("click", () => void this.regenerate());
     footer.createEl("button", { text: "取消", cls: "cc-btn" }).addEventListener("click", () => this.close());
     footer.createEl("button", { text: "保存卡片", cls: "cc-btn mod-cta" }).addEventListener("click", () => void this.save());
@@ -218,7 +218,7 @@ export class ConfirmModal extends Modal {
     this.contentEl.createEl("h2", { text: this.opts.title });
     const list = this.contentEl.createEl("ul");
     for (const line of this.opts.lines) list.createEl("li", { text: line });
-    const footer = this.contentEl.createDiv({ cls: "cc-footer" });
+    const footer = this.contentEl.createEl("div", { cls: "cc-footer" });
     footer.createEl("button", { text: "取消", cls: "cc-btn" }).addEventListener("click", () => this.close());
     footer
       .createEl("button", { text: this.opts.confirmText || "确认", cls: "cc-btn mod-cta" })
@@ -259,7 +259,7 @@ export class TermInputModal extends Modal {
       evt.preventDefault();
       this.submit();
     });
-    const footer = this.contentEl.createDiv({ cls: "cc-footer" });
+    const footer = this.contentEl.createEl("div", { cls: "cc-footer" });
     footer.createEl("button", { text: "取消", cls: "cc-btn" }).addEventListener("click", () => this.close());
     footer.createEl("button", { text: "生成", cls: "cc-btn mod-cta" }).addEventListener("click", () => this.submit());
     window.setTimeout(() => this.textarea.focus(), 30);

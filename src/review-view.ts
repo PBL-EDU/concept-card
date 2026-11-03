@@ -64,14 +64,14 @@ export class ConceptReviewView extends ItemView {
       return;
     }
     for (const item of cards) {
-      const row = parent.createDiv({ cls: "cc-review-row" });
+      const row = parent.createEl("div", { cls: "cc-review-row" });
       const titleEl = row.createEl("a", { text: item.file.basename, cls: "cc-review-title" });
       titleEl.addEventListener("click", (evt) => {
         evt.preventDefault();
         this.host.openCard(item.file);
       });
       row.createEl("span", { text: `${item.stage} · ${item.revisit}`, cls: "cc-review-meta" });
-      const actions = row.createDiv({ cls: "cc-review-actions" });
+      const actions = row.createEl("div", { cls: "cc-review-actions" });
       actions.createEl("button", { text: "已复查" }).addEventListener("click", () => {
         void this.host.markReviewed(item.file).then(() => this.render());
       });

@@ -1,23 +1,26 @@
 # Submission status
 
 **Repository:** <https://github.com/PBL-EDU/concept-card>
-**Release:** <https://github.com/PBL-EDU/concept-card/releases/tag/1.7.1>
+**Release:** <https://github.com/PBL-EDU/concept-card/releases/tag/1.7.2>
 **Plugin id:** `concept-card`
-**Manifest version:** `1.7.1`
+**Manifest version:** `1.7.2`
 
-## Review fixes in 1.7.1
+## Review status
 
-- `authorUrl` now points to the profile (<https://github.com/PBL-EDU>), not the repository.
-- `minAppVersion` raised to `1.7.2` (`Workspace.revealLeaf`, awaited).
-- Settings headings use `Setting#setHeading()` instead of raw `h2`/`h3`.
-- Removed `builtin-modules`; DOM creation uses Obsidian `createEl` helpers; `setDynamicTooltip` and `keyCode` removed.
-- Deterministic minified build without banner, so `main.js` matches a CI rebuild.
+1.7.2 addresses the remaining lint warnings:
+
+- `prefer-create-el`: all `createDiv` / `createSpan` calls replaced with `createEl`.
+- `no-unsafe-assignment`: frontmatter values annotated as `unknown` before narrowing.
+- README now discloses vault enumeration and clipboard behavior (behavior recommendations).
+- Release workflow template now includes `actions/attest-build-provenance` for artifact attestations.
+
+Still non-blocking recommendations: declarative `getSettingDefinitions()` (1.13 settings search) and the deprecated `display()` fallback. They do not affect functionality or installation.
 
 ## Already done
 
 - [x] Public GitHub repository with `README.md`, `README.zh-CN.md`, `LICENSE`, `manifest.json`, `versions.json`, `src/`, tests.
 - [x] `authorUrl` points at the organization profile.
-- [x] Version `1.7.1`, tag `1.7.1` pushed, release with assets `main.js`, `manifest.json`, `styles.css` verified.
+- [x] Version `1.7.2`, tag `1.7.2` pushed, release with assets `main.js`, `manifest.json`, `styles.css` verified.
 - [x] English README with a network-use / privacy disclosure.
 - [x] No telemetry, ads, self-update, obfuscation, or internal APIs (`app.internalPlugins` removed).
 - [x] BRAT install works with `PBL-EDU/concept-card`.
@@ -53,7 +56,7 @@ Until then, publish releases manually:
 gh release create <version> main.js manifest.json styles.css --verify-tag
 ```
 
-The tag must equal `manifest.json` `version` exactly (`1.7.1`, not `v1.7.1`).
+The tag must equal `manifest.json` `version` exactly (`1.7.2`, not `v1.7.2`).
 
 ## Requirement checklist
 
@@ -64,11 +67,11 @@ The tag must equal `manifest.json` `version` exactly (`1.7.1`, not `v1.7.1`).
 | README discloses network use and data sent | ✅ |
 | `manifest.json` at repository HEAD | ✅ |
 | `id` unique, no "obsidian" | ✅ `concept-card` |
-| `version` semver | ✅ `1.7.1` |
+| `version` semver | ✅ `1.7.2` |
 | `minAppVersion` accurate | ✅ `1.7.2` |
 | Description ≤250 chars, ends with `.`, no emoji | ✅ |
 | `isDesktopOnly` accurate (no Node/Electron APIs) | ✅ `false` |
-| Release tag equals manifest version | ✅ `1.7.1` |
+| Release tag equals manifest version | ✅ `1.7.2` |
 | Release assets present | ✅ `main.js`, `manifest.json`, `styles.css` |
 | No telemetry / ads / self-update / obfuscation | ✅ |
 | Command IDs do not include plugin id | ✅ |

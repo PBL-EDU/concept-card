@@ -66,8 +66,8 @@ export function collectExistingTags(app: App, root: string, limit = 80): string[
     if (prefix && !file.path.startsWith(prefix)) continue;
     const front = app.metadataCache.getFileCache(file)?.frontmatter;
     if (!front) continue;
-    const raw = front.tags;
-    const list = Array.isArray(raw) ? raw : typeof raw === "string" ? raw.split(/[,，]/) : [];
+    const raw: unknown = front.tags;
+    const list = (Array.isArray(raw) ? raw : typeof raw === "string" ? raw.split(/[,，]/) : []) as unknown[];
     for (const item of list) {
       const tag = String(item).replace(/^#/, "").trim();
       if (!tag) continue;
@@ -160,8 +160,12 @@ export function findCardsByTitle(app: App, title: string): TFile[] {
       hits.push(file);
       continue;
     }
-    const rawAliases = front.aliases ?? front.alias;
-    const aliases = Array.isArray(rawAliases) ? rawAliases : typeof rawAliases === "string" ? [rawAliases] : [];
+    const rawAliases: unknown = front.aliases ?? front.alias;
+    const aliases = (Array.isArray(rawAliases)
+      ? rawAliases
+      : typeof rawAliases === "string"
+        ? [rawAliases]
+        : []) as unknown[];
     if (aliases.some((a) => titleKey(String(a)) === key)) hits.push(file);
   }
   return hits;

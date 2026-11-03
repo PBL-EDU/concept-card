@@ -1,6 +1,6 @@
 {
   "name": "concept-card",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "Generate structured concept cards from selected text with your own OpenAI-compatible provider.",
   "main": "main.js",
   "scripts": {
